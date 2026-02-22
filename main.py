@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler,OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
 
 #Importing the training set and initialize the X_train and y_train
 #We drop the features that will not be very useful to our model
@@ -75,7 +76,7 @@ top_6=results.iloc[:6].copy()
 
 #Creating a 'Final Percentage' column, so the SUM of the top 6 predictions are 85.0%
 top_6['Final Percentage']=(top_6['Prediction']/(top_6['Prediction'].sum()))*85
-
+top_6['Names']=results_dataset['Player'].iloc[:6]
 #Rounding the % to be more clear and understanding
 top_6['Final Percentage']=top_6['Final Percentage'].round(0).astype(int)
 
@@ -87,3 +88,15 @@ for index, row in top_6.iterrows():
     print(f"{index + 1}. {row['Player']:<15} : {row['Final Percentage']:.1f}%")
 
 print('OTHERS : 15.0%')
+
+#Visualizing the results
+
+label = top_6['Player'].tolist()
+sizes = top_6['Final Percentage'].tolist()
+label.append("Others")
+sizes.append(15)
+
+#Visualization with Pie Chart
+fig,ax=plt.subplots()
+ax.pie(sizes,labels=label,autopct='%1.1f%%')
+plt.show()
